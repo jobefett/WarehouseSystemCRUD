@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,7 @@ import { UpdateProductComponent } from './components/update-product/update-produ
 import { ProductItemComponent } from './components/products-page/all-products/product-item/product-item.component';
 import { FiltersComponent } from './components/products-page/filters/filters.component';
 import { ProductsPageComponent } from './components/products-page/products-page.component';
+import { productsMockInterceptor } from './services/products-service.service';
 
 @NgModule({
   declarations: [
@@ -31,11 +32,10 @@ import { ProductsPageComponent } from './components/products-page/products-page.
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [provideHttpClient(withInterceptors([productsMockInterceptor]))],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

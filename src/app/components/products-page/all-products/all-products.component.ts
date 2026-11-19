@@ -4,15 +4,16 @@ import { ProductsServiceService } from '../../../services/products-service.servi
 
 @Component({
   selector: 'app-all-products',
+  standalone: false,
   templateUrl: './all-products.component.html',
-  styleUrls: ['./all-products.component.scss']
+  styleUrls: ['./all-products.component.scss'],
 })
 export class AllProductsComponent implements OnInit {
-
   public filteredString: string = '';
   constructor(
     public productsService: ProductsServiceService,
-    private router: Router){}
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.productsService.getAllProducts();
@@ -20,6 +21,5 @@ export class AllProductsComponent implements OnInit {
 
   public addProduct() {
     this.router.navigate(['products', 'add']);
-  };
-
+  }
 }

@@ -7,26 +7,27 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-filters',
+  standalone: false,
   templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.scss']
+  styleUrls: ['./filters.component.scss'],
 })
 export class FiltersComponent implements OnInit {
   public maxNumbOfFloors: number = environment.maxNumbOfFloors;
   public maxNumbOfSections: number = environment.maxNumbOfSections;
   public filterForm: FormGroup = new FormGroup({
-    code: new FormControl()
+    code: new FormControl(),
   });
-  
+
   private sub: Subscription;
 
-  constructor(private productsService: ProductsServiceService) { }
+  constructor(private productsService: ProductsServiceService) {}
 
   ngOnInit(): void {
     this.sub = this.filterForm.valueChanges
-    .pipe(
-      debounceTime(500)
-    )
-    .subscribe(values => { this.productsService.filterProducts(values.code, 'code'); });
+      .pipe(debounceTime(500))
+      .subscribe((values) => {
+        this.productsService.filterProducts(values.code, 'code');
+      });
   }
 
   public counter(n: number): Array<number> {
@@ -34,15 +35,20 @@ export class FiltersComponent implements OnInit {
   }
 
   public filterProductPerFloor(floor: number): void {
-    this.productsService.filterProducts(floor+1, 'floor');
+    this.productsService.filterProducts(floor + 1, 'floor');
   }
 
   public filterProductPerSection(section: number): void {
-    this.productsService.filterProducts(section+1, 'section');
+    this.productsService.filterProducts(section + 1, 'section');
   }
 
   public resetResults(): void {
     this.productsService.getAllProducts();
   }
-}
 
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+}
